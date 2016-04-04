@@ -80,7 +80,7 @@ function renderChart() {
     var alldiv = wrap.getElementsByTagName("div");
     for (var i=0;i<alldiv.length;i++){
         alldiv[i].addEventListener("mouseover",function(){
-           document.title = event.target.id +" "+event.target.style.height.substring(0,event.target.style.height.indexOf('p')); 
+           document.title = this.id +" "+this.style.height.substring(0,this.style.height.indexOf('p')); 
         });
     }
 }
@@ -97,9 +97,15 @@ function getRandomColor() {
 /**
  * 日、周、月的radio事件点击时的处理函数
  */
-function graTimeChange() {
+function graTimeChange(evt) {
     // 设置对应数据
-    var gravalue = event.target.value;
+    if(window.event){
+        evt = window.event;
+        var element = event.target;
+    }else{
+        var element = evt;
+    }
+    var gravalue = element.value;
     pageState["nowGraTime"] = gravalue;
     // 调用图表渲染函数
     initAqiChartData();
@@ -109,9 +115,15 @@ function graTimeChange() {
 /**
  * select发生变化时的处理函数
  */
-function citySelectChange() {
+function citySelectChange(evt) {
     // 设置对应数据
-    var cityvalue = event.target.value;
+    if(window.event){
+        evt = window.event;
+        var element = event.target;
+    }else{
+        var element = evt;
+    }
+    var cityvalue = element.value;
     pageState["nowSelectCity"] = cityvalue;
     // 调用图表渲染函数
     initAqiChartData();
@@ -125,7 +137,7 @@ function initGraTimeForm() {
     var radio = document.getElementsByName("gra-time");
     for (var i = 0; i < radio.length; i++) {
         radio[i].addEventListener("change", function () {
-            graTimeChange();
+            graTimeChange(this);
         }, false);
         if (radio[i].checked) {
             pageState.nowGraTime = radio[i].value;
@@ -148,7 +160,7 @@ function initCitySelector() {
     // 给select设置事件，当选项发生变化时调用函数citySelectChange
     var select = document.getElementById("city-select");
     select.addEventListener("change", function () {
-        citySelectChange()
+        citySelectChange(this)
     }, false);
 }
 
